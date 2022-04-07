@@ -5,7 +5,12 @@ app = Flask(__name__)
 
 @app.route("/")
 def main():
-    return "1"
+    return render_template("main.html")
+
+
+@app.route("/vk")
+def vk():
+    return render_template("vk_redirect.html")
 
 
 @app.route("/complaint/<int:user_id>")
