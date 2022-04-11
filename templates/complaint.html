@@ -29,17 +29,18 @@
         <label class="form-label">Описание</label>
         <textarea class="form-control" rows="3" name="description" placeholder="Опишите причину жалобы"></textarea>
     </div>
-    <label>Ваша страница в вк</label>
-    <div class="input-group mb-3">
-        <span class="input-group-text" id="basic-addon3">https://vk.com/</span>
-        <input type="text" name="user-id" class="form-control" id="basic-url" aria-describedby="basic-addon3">
-    </div>
     <label>Приложите фотографию для жалобы</label>
     <div class="input-group mb-3">
         <input type="file" name=file class="form-control" id="inputGroupFile03"
                aria-describedby="inputGroupFileAddon03">
     </div>
+    {% if message != "" %}
+        <div class="alert alert-danger mb-3r" role="alert">
+            {{ message }}
+        </div>
+    {% endif %}
     <button type="submit" class="btn btn-success" value="Upload">Подать жалобу</button>
+    <br><br><br><br>
 </form>
 {% endblock %}
 </body>

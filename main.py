@@ -15,7 +15,7 @@ ALLOWED_EXTENSIONS = tuple(["jpg", "jpeg", "png", "img"])
 
 
 def allowed_file(filename):
-    return "." in filename and filename.rsplit(".", 1)[1] in ALLOWED_EXTENSIONS
+    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 @app.route("/")
@@ -25,11 +25,17 @@ def main_page():
 
 @app.route("/vk")
 def vk_redirect():
-    return render_template("vk_redirect.html")
+    return render_template("vk_redirect.html", message="")
 
 
-@app.route("/complaint", methods=["GET", "POST"])
-def complaint():
+@app.route("/complaint")
+def complaint_to_vk():
+    return render_template("vk_redirect.html", message="Регистрация для жалобы проходит через VK")
+
+
+@app.route("/complaint/<string:user_id>", methods=["GET", "POST"])
+def complaint(user_id):
+    print(user_id)
     if request.method == "POST":
         db_sess = db_session.create_session()
         complaint = Complaint()
@@ -37,7 +43,6 @@ def complaint():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
-            user_id = request.form["user-id"]
             address = request.form["address"]
             name = request.form["name"]
             description = request.form["description"]
@@ -49,13 +54,13 @@ def complaint():
             db_sess.add(complaint)
             db_sess.commit()
             return redirect("/")
-        return render_template("complaint.html", title="Жалоба")
-    return render_template("complaint.html", title="Жалоба")
+        return render_template("complaint.html", title="Жалоба", message="Неправильный формат файла")
+    return render_template("complaint.html", title="Жалоба", message="")
 
 
 def main():
     db_session.global_init("db/ecology.db")
-    app.run(debug=True)
+    app.run(host="127.0.0.1", port=5000)
 
 
 if __name__ == "__main__":
