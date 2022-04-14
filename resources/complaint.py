@@ -5,7 +5,7 @@ from flask_restful import Resource
 
 
 class GetComplaints(Resource):
-    def get(self, user_id: str):
+    def get(self, user_id: str) -> jsonify():
         db_sess = db_session.create_session()
         complaints = db_sess.query(Complaint).filter(Complaint.user_id == user_id)
         to_return = {"complaints": []}
