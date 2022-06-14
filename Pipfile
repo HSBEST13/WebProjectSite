@@ -1,0 +1,10 @@
+[[source]]
+verify_ssl = true
+
+[[packages]]
+flask = "*"
+flask_login = "*"
+flask_restful = "*"
+
+[requires]
+python_version = "3.7
